@@ -1,19 +1,20 @@
 import React from 'react';
 import ClipsData from './../../ClipsData';
 import ClipButton from './ClipButton'
-import { View } from 'react-native';
+import { View, FlatList } from 'react-native';
 
-export default function Clips({}) {
+export default function Clips() {
   return (
-    <View>
-      {ClipsData.map((clip: Object) => {
-        return (
+    <FlatList
+      data={ClipsData}
+      renderItem={({item}) => (
           <ClipButton
-            clip={clip.clip}
-            title={clip.title}
+            key={item.title}
+            clip={item.clip}
+            title={item.title}
           />
         )
-      })}
-    </View>
+      }
+    />
   )
 }
