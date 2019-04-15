@@ -30,16 +30,21 @@ interface BProps {
 // });
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    paddingHorizontal: 10
-  },
-  button: {
-    alignItems: 'center',
-    width: 260,
+    // flex: 1,
     backgroundColor: '#DDDDDD',
     padding: 10,
-    marginBottom: 20
+    width: 150,
+    height: 110,
+    margin: 10
+
+  },
+  button: {
+    // alignItems: 'center',
+    // width: 135,
+    // height: 80,
+    // backgroundColor: '#DDDDDD',
+    // padding: 10,
+    // marginBottom: 20
   },
   countContainer: {
     alignItems: 'center',
@@ -53,11 +58,14 @@ const styles = StyleSheet.create({
 export default function SoundButton({ clip, title }: BProps) {
   const sound: any = new Sound(clip, error => console.log(error, sound));
   return (
-    <TouchableOpacity
-      style={styles.button}
-      onPress={() => sound.play((success: Object) => console.log(success))}
-    >
-      <Text>{title}</Text>
-    </TouchableOpacity>
+    // <View>
+    <View style={styles.container}>
+      <TouchableOpacity
+        // style={styles.button}
+        onPress={() => sound.play((success: Object) => console.log(success))}
+      >
+        <Text>{title}</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
