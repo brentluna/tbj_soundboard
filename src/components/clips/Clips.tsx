@@ -7,16 +7,11 @@ interface Item {
   title: string;
   clip: any;
 }
-const style = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    padding: 10,
-    marginBottom: 40
-  }
-})
-export default function Clips() {
+interface Props {
+  setClip: ({}: Item)=>void;
+}
+
+export default function Clips({setClip}: Props) {
   const keyExtractor = (item: Item, idx: number) => item.title
   return (
     <FlatList
@@ -30,9 +25,20 @@ export default function Clips() {
             key={item.title}
             clip={item.clip}
             title={item.title}
+            setClip={setClip}
           />
         )
       }
     />
   )
 }
+
+const style = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 10,
+    marginBottom: 40
+  }
+})

@@ -10,32 +10,54 @@ import {
 } from 'react-native';
 import Sound from 'react-native-sound';
 
-interface Style {
-  text: TextStyle;
-  button: ViewStyle;
-}
-interface BProps {
+// interface Style {
+//   text: TextStyle;
+//   button: ViewStyle;
+// }
+
+interface Props {
   clip: any;
   title: string;
+  setClip: ({})=>void;
 }
-// const styles = StyleSheet.create<Style>({
-//   text: {
-//     color: 'lightgreen',
-//     fontWeight: 'bold',
-//     fontSize: 30,
-//   },
-//   button: {
-//     width: 150
-//   },
-// });
+
+export default function SoundButton({ clip, title, setClip }: Props) {
+  const sound: any = new Sound(clip, error => console.log(error, sound));
+  return (
+    // <View>
+    // <View style={styles.container}>
+      <TouchableOpacity
+        // style={styles.button}
+        // onPress={() => {debugger; sound.play((success: Object) => console.log(success))}}
+        onPress={() => setClip({clip, title})}
+      >
+    <View style={styles.container}>
+        <Text style={styles.text}>{title}</Text>
+    </View>
+      </TouchableOpacity>
+    // </View>
+  );
+}
+
 const styles = StyleSheet.create({
   container: {
     // flex: 1,
-    backgroundColor: '#DDDDDD',
+    // backgroundColor: '#DDDDDD',
+    backgroundColor: 'salmon',
+    borderRadius: 5,
+    display: 'flex',
+    justifyContent: 'space-around',
+    alignItems: 'center',
     padding: 10,
     width: 150,
-    height: 110,
-    margin: 10
+    height: 80,
+    margin:10
+
+  },
+  text: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center'
 
   },
   button: {
@@ -54,18 +76,3 @@ const styles = StyleSheet.create({
     color: '#FF00FF'
   }
 });
-
-export default function SoundButton({ clip, title }: BProps) {
-  const sound: any = new Sound(clip, error => console.log(error, sound));
-  return (
-    // <View>
-    <View style={styles.container}>
-      <TouchableOpacity
-        // style={styles.button}
-        onPress={() => sound.play((success: Object) => console.log(success))}
-      >
-        <Text>{title}</Text>
-      </TouchableOpacity>
-    </View>
-  );
-}

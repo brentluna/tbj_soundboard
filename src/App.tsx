@@ -8,33 +8,74 @@
  * @format
  */
 
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
-import Clips from './components/clips/Clips'
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View} from 'react-native';
+import Clips from './components/clips/Clips';
+import Player from './components/player/Player';
+import Sound from 'react-native-sound';
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+const handleErr = (err: boolean) => {
+  if (err) {
+    console.log('error on init');
 
-interface Props {}
-export default class App extends Component<Props> {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Clips />
-      </View>
-    );
+  } else {
+    console.log('success init');
   }
+}
+const onEnd = (res: Object, sound: Sound) => {
+  debugger
+}
+const createSound = (clip: any) => new Sound(clip, handleErr);
+
+interface CurrentClip {
+  clip: any;
+  title: string;
+  sound: any;
+
+}
+interface CurrentSound {
+  sound: Sound;
+}
+// const sound: any = new Sound(clip, error => console.log(error, sound));
+
+
+export default function App() {
+  const [currentClip, setClip] = useState<CurrentClip>({clip: null, title: '', sound: null});
+
+  useEffect(() => {
+    if (!currentClip || !currentClip.clip) return;
+    const sound = createSound(currentClip.clip)
+    sound.setNumberOfLoops(3);
+    sound.play(res => onEnd(res, sound))
+  }, [currentClip])
+
+  // const [sound, setSound] = useState<CurrentSound>();
+
+  // const updateCurrentClip = (clip: CurrentClip) => {
+  //   setClip(clip);
+  //   const sound = createSound(clip.clip)
+  //   setSound(sound);
+  //   // sound.play((success: Object) => console.log('Finished playing', success, sound))
+  // }
+
+  // useEffect(() => {
+  //   if (!currentClip || !currentClip.clip) return;
+  //   const sound = createSound(currentClip.clip)
+  //   sound.play((success: Object) => console.log('Finished playing', success, sound))
+  // })
+  return (
+    <View style={styles.container}>
+      <Clips setClip={setClip}/>
+      <Player clip={currentClip}/>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'stretch',
     backgroundColor: '#F5FCFF',
   },
   welcome: {
